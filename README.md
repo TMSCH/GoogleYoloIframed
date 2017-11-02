@@ -4,4 +4,4 @@ Run the app with:
 python -m SimpleHTTPServer 8080
 ```
 
-And go to hhttp://localhost:8080
+And go to [http://localhost:8080](http://localhost:8080)
