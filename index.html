@@ -1,17 +1,17 @@
 <!--
 
-  This is the code run as top level. It creates the first level iframe that loads Smart Lock. It
+  This is the code run as top level. It creates the first level iframe that loads Google Yolo. It
   handles the initial handshake as well as the result sent by the iframe.
 
   The iframe is styled according to its rendering mode (bottomSheet for mobile, navPopout for
-  desktop). As you can see, it is sized according to the maximum dimensions of the Smart Lock
+  desktop). As you can see, it is sized according to the maximum dimensions of the Google Yolo
   iframe so all the content will fit.
 
 -->
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Smart Lock Web IFramed Test App</title>
+    <title>Google Yolo Web IFramed Test App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       #iframe {
@@ -28,7 +28,7 @@
       window.addEventListener('message', (event) => {
         switch(event.data.type) {
           case 'verifyPing':
-            // This part handles the initial handshake by the Smart Lock iframe.
+            // This part handles the initial handshake by the Google Yolo iframe.
             console.log('Acknowledging ping.');
             event.source.postMessage({
               type: 'verifyAck',

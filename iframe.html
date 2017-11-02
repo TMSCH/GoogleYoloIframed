@@ -1,7 +1,7 @@
 <!--
 
   This is the code run in the first level iframe. The backgound is colored in light gray so you can
-  see the space it occupies. As soon as Smart Lock is initialized and the ancestor frames
+  see the space it occupies. As soon as Google Yolo is initialized and the ancestor frames
   verification is done and successful, it initiates a hint flow. The result, credential or error,
   is sent back to the top level frame by a postMessage.
 
@@ -20,7 +20,7 @@
     <script defer src="https://smartlock.google.com/client"></script>
     <script>
       /**
-       * This method returns the name of the rendering mode of the Smart Lock iframe. This will
+       * This method returns the name of the rendering mode of the Google Yolo iframe. This will
        * determine its positioning.
        */
       function getRenderMode() {
@@ -31,7 +31,7 @@
           '511828570984-dhnshqcpegee66hgnp754dupe8sbas18.apps.googleusercontent.com';
       const CONFIG = {
         supportedAuthMethods: [
-          'smartlock://id-and-password',
+          'googleyolo://id-and-password',
           'https://accounts.google.com'
         ],
         supportedIdTokenProviders: [{
@@ -40,15 +40,16 @@
         }]
       };
 
-      window.onSmartLockLoad = (smartlock) => {
-        console.log("SmartLock loaded.");
-        // Set the rendering mode of the IFrame. By default, Smart Lock iframe will decide
+      window.onGoogleYoloLoad = (googleyolo) => {
+        console.log("GoogleYolo loaded.");
+        // Set the rendering mode of the IFrame. By default, Google Yolo iframe will decide
         // by itself where to position. bottomSheet is at the bottom of the screen on mobile,
         // navPopout is the top right card on desktop. Forcing the rendering mode here ensures that
         // we position the first level iframe correctly. In index.html, you can see that the same
         // isMobile function is used to style the iframe.
+        // setRenderMode is going to be exposed on googleyolo soon.
         openyolo.setRenderMode(getRenderMode());
-        smartlock.hint(CONFIG).then((credential) => {
+        googleyolo.hint(CONFIG).then((credential) => {
           // '*' is used as a placeholder, you MUST set here the top level domain.
           window.parent.postMessage(
               {type: 'credential', credential}, '*' /* REPLACE BY TOP LEVEL DOMAIN! */);
