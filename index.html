@@ -1,0 +1,74 @@
+<!--
+
+  This is the code run as top level. It creates the first level iframe that loads Smart Lock. It
+  handles the initial handshake as well as the result sent by the iframe.
+
+  The iframe is styled according to its rendering mode (bottomSheet for mobile, navPopout for
+  desktop). As you can see, it is sized according to the maximum dimensions of the Smart Lock
+  iframe so all the content will fit.
+
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Smart Lock Web IFramed Test App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      #iframe {
+        box-sizing: border-box;
+        position: absolute;
+        border: 0;
+      }
+    </style>
+    <script src="/common.js"></script>
+  </head>
+  <body>
+    <iframe id="iframe" src="/iframe.html"></iframe>
+    <script type="text/javascript">
+      window.addEventListener('message', (event) => {
+        switch(event.data.type) {
+          case 'verifyPing':
+            // This part handles the initial handshake by the Smart Lock iframe.
+            console.log('Acknowledging ping.');
+            event.source.postMessage({
+              type: 'verifyAck',
+              data: event.data.data
+            }, '*');
+            break;
+          case 'credential':
+            // The user selected a credential.
+            console.log('Received credential!', event.data.credential);
+            removeIframe();
+            break;
+          case 'error':
+            // An error happened.
+            console.log('Error:', event.data.error);
+            removeIframe();
+            break
+          default:
+            // Do nothing.
+        }
+      });
+      const iframeElt = document.getElementById('iframe');
+      
+      function removeIframe() {
+        document.body.removeChild(iframeElt);
+      }
+
+      // Position the IFrame accordingly, based on the layout.
+      if (isMobile()) {
+        iframeElt.style.bottom = 0;
+        iframeElt.style.left = 0;
+        iframeElt.style.width = '100%';
+        // Max height of the IFrame.
+        iframeElt.style.height = '221px';
+      } else {
+        iframeElt.style.top = 0;
+        iframeElt.style.right = 0;
+        iframeElt.style.width = '400px';
+        // Max height of the IFrame.
+        iframeElt.style.height = '370px';
+      }
+    </script>
+  </body>
+</html>
